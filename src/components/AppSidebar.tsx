@@ -6,7 +6,6 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -26,12 +25,11 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <div className="p-4 border-b border-sidebar-border">
-        <h1 className="font-display text-lg font-bold text-sidebar-primary-foreground">DDGRS</h1>
-        <p className="text-xs text-sidebar-foreground/60">Grievance Redressal System</p>
+        <h1 className="text-sm font-semibold text-sidebar-foreground">DDGRS</h1>
+        <p className="text-[11px] text-muted-foreground">Grievance Redressal</p>
       </div>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => (
@@ -39,7 +37,7 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} end={item.url === '/'} activeClassName="bg-sidebar-accent text-sidebar-accent-foreground">
                       <item.icon className="mr-2 h-4 w-4" />
-                      <span>{item.title}</span>
+                      <span className="text-sm">{item.title}</span>
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -49,10 +47,10 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="border-t border-sidebar-border p-3">
-        <div className="text-xs text-sidebar-foreground/60 mb-2 truncate">{user?.email}</div>
-        <SidebarMenuButton onClick={signOut} className="w-full justify-start text-sidebar-foreground/80 hover:text-sidebar-foreground">
+        <div className="text-[11px] text-muted-foreground mb-2 truncate">{user?.email}</div>
+        <SidebarMenuButton onClick={signOut} className="w-full justify-start text-muted-foreground hover:text-foreground">
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Logout</span>
+          <span className="text-sm">Logout</span>
         </SidebarMenuButton>
       </SidebarFooter>
     </Sidebar>

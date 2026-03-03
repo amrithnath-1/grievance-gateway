@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Shield, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 export default function Login() {
@@ -41,42 +41,39 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md animate-fade-in">
-        <CardHeader className="text-center space-y-3">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-primary">
-            <Shield className="h-7 w-7 text-primary-foreground" />
-          </div>
-          <CardTitle className="font-display text-2xl">DDGRS Admin</CardTitle>
-          <CardDescription>
-            {isSignUp ? 'Create a staff account' : 'Sign in to the Grievance Redressal System'}
+      <Card className="w-full max-w-sm">
+        <CardHeader className="text-center">
+          <CardTitle className="text-lg font-semibold">DDGRS Admin</CardTitle>
+          <CardDescription className="text-xs">
+            {isSignUp ? 'Create a staff account' : 'Sign in to continue'}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {isSignUp && (
-              <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
-                <Input id="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+              <div className="space-y-1">
+                <Label htmlFor="fullName" className="text-xs">Full Name</Label>
+                <Input id="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} required className="h-9 text-sm" />
               </div>
             )}
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <div className="space-y-1">
+              <Label htmlFor="email" className="text-xs">Email</Label>
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="h-9 text-sm" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
+            <div className="space-y-1">
+              <Label htmlFor="password" className="text-xs">Password</Label>
+              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="h-9 text-sm" />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full h-9 text-sm" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {isSignUp ? 'Create Account' : 'Sign In'}
             </Button>
           </form>
-          <div className="mt-4 text-center">
+          <div className="mt-3 text-center">
             <button
               type="button"
               onClick={() => setIsSignUp(!isSignUp)}
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+              className="text-xs text-muted-foreground hover:text-primary transition-colors"
             >
               {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
             </button>

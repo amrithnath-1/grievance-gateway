@@ -5,13 +5,13 @@ import { AppSidebar } from '@/components/AppSidebar';
 export function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full">
+      <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         <main className="flex-1 overflow-auto">
-          <header className="sticky top-0 z-10 flex h-14 items-center border-b bg-card px-4">
+          <header className="sticky top-0 z-10 flex h-12 items-center border-b bg-card px-4">
             <SidebarTrigger />
           </header>
-          <div className="p-4 md:p-6 lg:p-8">
+          <div className="p-4 md:p-6">
             {children}
           </div>
         </main>
