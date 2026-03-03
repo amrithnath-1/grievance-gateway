@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { FileText, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
 
-const PIE_COLORS = ['hsl(220,70%,45%)', 'hsl(200,80%,50%)', 'hsl(38,92%,50%)', 'hsl(25,85%,55%)', 'hsl(280,60%,55%)', 'hsl(152,60%,40%)', 'hsl(220,10%,60%)', 'hsl(0,72%,51%)'];
+const PIE_COLORS = ['hsl(220,60%,50%)', 'hsl(200,70%,50%)', 'hsl(38,80%,50%)', 'hsl(25,75%,55%)', 'hsl(280,50%,55%)', 'hsl(150,50%,42%)', 'hsl(220,8%,60%)', 'hsl(0,65%,50%)'];
 
 export default function Dashboard() {
   const { data: stats, isLoading } = useDashboardStats();
@@ -22,47 +22,44 @@ export default function Dashboard() {
 
   const categoryData = CATEGORIES.map(c => ({ name: c, count: stats.byCategory[c] || 0 }));
   const statusData = STATUSES.map((s, i) => ({ name: s, value: stats.byStatus[s] || 0, color: PIE_COLORS[i] })).filter(s => s.value > 0);
-  const recentGrievances = stats.grievances.slice(0, 8);
+  const recentGrievances = stats.grievances.slice(0, 6);
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div>
-        <h1 className="font-display text-2xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground text-sm">Grievance Redressal System Overview</p>
-      </div>
+    <div className="space-y-6">
+      <h1 className="text-lg font-semibold">Dashboard</h1>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={FileText} label="Total Grievances" value={stats.total} color="text-primary" />
-        <StatCard icon={Clock} label="Pending" value={pending} color="text-warning" />
-        <StatCard icon={AlertTriangle} label="In Progress" value={inProgress} color="text-info" />
-        <StatCard icon={CheckCircle} label="Resolved" value={resolved} color="text-success" />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <StatCard icon={FileText} label="Total" value={stats.total} />
+        <StatCard icon={Clock} label="Pending" value={pending} />
+        <StatCard icon={AlertTriangle} label="In Progress" value={inProgress} />
+        <StatCard icon={CheckCircle} label="Resolved" value={resolved} />
       </div>
 
-      {/* Charts row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Card>
-          <CardHeader><CardTitle className="text-base font-display">Category Distribution</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Category Distribution</CardTitle></CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={280}>
+            <ResponsiveContainer width="100%" height={240}>
               <BarChart data={categoryData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,15%,88%)" />
-                <XAxis dataKey="name" tick={{ fontSize: 11 }} angle={-30} textAnchor="end" height={80} />
-                <YAxis allowDecimals={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(220,10%,90%)" />
+                <XAxis dataKey="name" tick={{ fontSize: 10 }} angle={-30} textAnchor="end" height={70} />
+                <YAxis allowDecimals={false} tick={{ fontSize: 10 }} />
                 <Tooltip />
-                <Bar dataKey="count" fill="hsl(220,70%,45%)" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="count" fill="hsl(220,60%,50%)" radius={[3, 3, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader><CardTitle className="text-base font-display">Status Breakdown</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Status Breakdown</CardTitle></CardHeader>
           <CardContent className="flex items-center justify-center">
             {statusData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={280}>
+              <ResponsiveContainer width="100%" height={240}>
                 <PieChart>
-                  <Pie data={statusData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label={({ name, value }) => `${name}: ${value}`}>
+                  <Pie data={statusData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={85} label={({ name, value }) => `${name}: ${value}`}>
                     {statusData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
                   </Pie>
                   <Tooltip />
@@ -75,19 +72,19 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      {/* Category cards */}
+      {/* Category grid */}
       <div>
-        <h2 className="font-display text-lg font-semibold mb-3">Categories</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        <h2 className="text-sm font-medium mb-3">Categories</h2>
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3">
           {CATEGORIES.map(cat => (
             <button
               key={cat}
               onClick={() => navigate(`/grievances?category=${encodeURIComponent(cat)}`)}
-              className="stat-card text-left hover:border-primary/30 cursor-pointer"
+              className="stat-card text-center hover:border-primary/30 cursor-pointer"
             >
-              <div className="text-2xl mb-1">{CATEGORY_ICONS[cat]}</div>
-              <div className="text-xs font-medium text-muted-foreground">{cat}</div>
-              <div className="text-lg font-bold font-display">{stats.byCategory[cat] || 0}</div>
+              <div className="text-xl mb-1">{CATEGORY_ICONS[cat]}</div>
+              <div className="text-[11px] text-muted-foreground">{cat}</div>
+              <div className="text-base font-semibold mt-0.5">{stats.byCategory[cat] || 0}</div>
             </button>
           ))}
         </div>
@@ -95,32 +92,35 @@ export default function Dashboard() {
 
       {/* Recent grievances */}
       <Card>
-        <CardHeader><CardTitle className="text-base font-display">Recent Grievances</CardTitle></CardHeader>
-        <CardContent>
+        <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Recent Grievances</CardTitle></CardHeader>
+        <CardContent className="p-0">
           {recentGrievances.length === 0 ? (
-            <p className="text-muted-foreground text-sm py-4 text-center">No grievances yet.</p>
+            <p className="text-muted-foreground text-sm py-6 text-center">No grievances yet.</p>
           ) : (
-            <div className="space-y-2">
-              {recentGrievances.map(g => (
-                <button
-                  key={g.id}
-                  onClick={() => navigate(`/grievances/${g.id}`)}
-                  className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors text-left"
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="font-mono text-xs text-muted-foreground">{g.grievance_id}</span>
-                      <StatusBadge status={g.status} />
-                      {g.is_anonymous && <span className="text-xs text-muted-foreground italic">Anonymous</span>}
-                    </div>
-                    <p className="text-sm truncate mt-0.5">{g.description}</p>
-                  </div>
-                  <span className="text-xs text-muted-foreground ml-3 shrink-0">
-                    {new Date(g.created_at).toLocaleDateString()}
-                  </span>
-                </button>
-              ))}
-            </div>
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b">
+                  <th className="text-left p-3 text-xs font-medium text-muted-foreground">ID</th>
+                  <th className="text-left p-3 text-xs font-medium text-muted-foreground">Description</th>
+                  <th className="text-left p-3 text-xs font-medium text-muted-foreground">Status</th>
+                  <th className="text-left p-3 text-xs font-medium text-muted-foreground">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentGrievances.map(g => (
+                  <tr
+                    key={g.id}
+                    onClick={() => navigate(`/grievances/${g.id}`)}
+                    className="border-b last:border-0 hover:bg-muted/40 cursor-pointer"
+                  >
+                    <td className="p-3 font-mono text-xs text-muted-foreground">{g.grievance_id}</td>
+                    <td className="p-3 text-xs truncate max-w-[200px]">{g.description}</td>
+                    <td className="p-3"><StatusBadge status={g.status} /></td>
+                    <td className="p-3 text-xs text-muted-foreground">{new Date(g.created_at).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
         </CardContent>
       </Card>
@@ -128,13 +128,13 @@ export default function Dashboard() {
   );
 }
 
-function StatCard({ icon: Icon, label, value, color }: { icon: any; label: string; value: number; color: string }) {
+function StatCard({ icon: Icon, label, value }: { icon: any; label: string; value: number }) {
   return (
-    <div className="stat-card flex items-start gap-3">
-      <div className={`p-2 rounded-lg bg-muted ${color}`}><Icon className="h-5 w-5" /></div>
+    <div className="stat-card flex items-center gap-3">
+      <div className="p-2 rounded-md bg-muted"><Icon className="h-4 w-4 text-muted-foreground" /></div>
       <div>
-        <p className="text-xs text-muted-foreground">{label}</p>
-        <p className="text-2xl font-bold font-display">{value}</p>
+        <p className="text-[11px] text-muted-foreground">{label}</p>
+        <p className="text-xl font-semibold">{value}</p>
       </div>
     </div>
   );
@@ -143,13 +143,13 @@ function StatCard({ icon: Icon, label, value, color }: { icon: any; label: strin
 function DashboardSkeleton() {
   return (
     <div className="space-y-6">
-      <Skeleton className="h-8 w-48" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[1,2,3,4].map(i => <Skeleton key={i} className="h-24" />)}
+      <Skeleton className="h-6 w-32" />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {[1,2,3,4].map(i => <Skeleton key={i} className="h-20" />)}
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Skeleton className="h-80" />
-        <Skeleton className="h-80" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <Skeleton className="h-72" />
+        <Skeleton className="h-72" />
       </div>
     </div>
   );
